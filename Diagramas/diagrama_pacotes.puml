@@ -1,0 +1,53 @@
+@startuml
+package "oficina_washi_car (Core)" <<package>> {
+
+  package "platforms (Plataformas)" <<package>> {
+    package "web"
+    package "mobile"
+  }
+
+  package "domain (Domain)" <<package>> {
+    package "models"
+    package "use_cases"
+    package "repositories"
+  }
+
+  package "infrastructure (Infrastructure)" <<package>> {
+    package "database"
+    package "auth"
+    package "media"
+    package "external_services"
+  }
+
+  package "shared (Shared)" <<package>> {
+    package "utils"
+    package "constants"
+    package "interfaces"
+  }
+
+  package "admin (Administration)" <<package>> {
+    package "views"
+    package "forms"
+    package "configurations"
+  }
+
+  package "api" <<package>> {
+    package "v1"
+    package "docs"
+  }
+
+  "platforms (Plataformas)" --> "domain (Domain)" : "<<uses>>"
+  "platforms (Plataformas)" --> "shared (Shared)" : "<<utilizes>>"
+
+  "domain (Domain)" --> "infrastructure (Infrastructure)" : "<<uses>>"
+  "domain (Domain)" --> "shared (Shared)" : "<<utilizes>>"
+
+  "api" --> "domain (Domain)" : "<<accesses>>"
+  "api" --> "infrastructure (Infrastructure)" : "<<uses>>"
+  "api" --> "shared (Shared)" : "<<utilizes>>"
+
+  "admin (Administration)" --> "domain (Domain)" : "<<manages>>"
+  "admin (Administration)" --> "infrastructure (Infrastructure)" : "<<uses>>"
+
+}
+@enduml
