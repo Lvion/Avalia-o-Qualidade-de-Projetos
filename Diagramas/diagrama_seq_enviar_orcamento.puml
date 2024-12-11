@@ -1,0 +1,80 @@
+@startuml
+actor Cliente
+actor Funcionario
+participant "View\nOrcamentoView" as View
+participant "Form\nOrcamentoForm" as Form
+participant "Model\nOrcamento" as Model
+participant "Model\nAgendamento" as Agendamento
+participant "Service\nNotificacao" as Notify
+database "Database" as DB
+
+' Início - Cliente solicita agendamento
+Cliente -> View: Solicita agendamento
+activate View
+View -> Agendamento: Cria agendamento pendente
+Agendamento -> DB: Salva agendamento
+DB --> View: Confirma criação
+View --> Funcionario: Notifica novo agendamento
+
+' Funcionário cria orçamento
+Funcionario -> View: Acessa agendamento pendente
+View -> DB: Busca dados do agendamento
+DB --> View: Retorna dados
+View --> Funcionario: Exibe detalhes do agendamento
+
+Funcionario -> View: Preenche dados do orçamento
+View -> Form: Valida dados do orçamento
+activate Form
+
+Form -> Form: Valida preço
+Form -> Form: Valida tempo de serviço
+Form -> Form: Valida descrição
+
+alt Dados Inválidos
+    Form --> View: Retorna erros
+    View --> Funcionario: Exibe mensagens de erro
+else Dados Válidos
+    Form --> View: Dados validados
+    
+    View -> Model: Cria orçamento
+    activate Model
+    Model -> DB: Salva orçamento
+    Model --> View: Retorna orçamento criado
+    deactivate Model
+
+    View -> Notify: Notifica cliente sobre novo orçamento
+    activate Notify
+    Notify -> DB: Registra notificação
+    
+    ' Envia notificações
+    Notify -> Cliente: Envia email com orçamento
+    Notify -> Cliente: Envia SMS (opcional)
+    Notify --> View: Confirma envio
+    deactivate Notify
+
+    View --> Funcionario: Confirma envio do orçamento
+end
+
+' Cliente visualiza orçamento
+Cliente -> View: Acessa orçamento
+View -> DB: Busca orçamento
+DB --> View: Retorna dados
+View --> Cliente: Exibe detalhes do orçamento
+
+alt Cliente aceita orçamento
+    Cliente -> View: Aceita orçamento
+    View -> Model: Atualiza status
+    Model -> DB: Salva aceitação
+    View -> Notify: Notifica funcionário
+    Notify -> Funcionario: Envia notificação de aceite
+else Cliente rejeita orçamento
+    Cliente -> View: Rejeita orçamento
+    View -> Model: Atualiza status
+    Model -> DB: Salva rejeição
+    View -> Notify: Notifica funcionário
+    Notify -> Funcionario: Envia notificação de rejeição
+end
+
+deactivate Form
+deactivate View
+@enduml
