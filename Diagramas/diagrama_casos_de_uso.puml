@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+skinparam packageStyle rect
+skinparam usecase {
+  BackgroundColor LightYellow
+  BorderColor Black
+  ArrowColor Black
+}
+
+actor Usuario
+actor Cliente
+actor Parceiro
+actor Funcionario
+
+Usuario --> (Visualizar tabela de serviços)
+Usuario --> (Acessar aba de parcerias)
+Usuario --> (Visualizar horário de funcionamento)
+Usuario --> (Visualizar a localização)
+
+Parceiro --> (Cadastrar parceiro)
+Funcionario <-- (Cadastrar parceiro)
+Parceiro --> (Acessar área de parceiro)
+
+Cliente --> (Cadastrar dados)
+Cliente --> (Agendar serviço)
+Cliente --> (Desmarcar agendamento)
+Cliente --> (Acessar área cliente)
+Cliente <-- (Enviar orçamento)
+Cliente <-- (Confirmar agendamento)
+
+Funcionario --> (Registrar orçamento do pedido)
+Funcionario --> (Cadastrar serviços)
+Funcionario --> (Enviar orçamento)
+Funcionario --> (Confirmar agendamento)
+
+(Acessar área cliente) -.-> (Validar acesso) : <<include>>
+(Acessar área de parceiro) <-.- (Validar acesso) : <<include>>
+(Agendar serviço) -.-> (Validar acesso) : <<include>>
+(Desmarcar agendamento) -.-> (Validar acesso) : <<include>>
+(Confirmar agendamento) <-.- (Validar dados) : <<include>>
+
+@enduml
