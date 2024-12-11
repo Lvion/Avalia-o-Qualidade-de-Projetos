@@ -1,0 +1,22 @@
+@startuml
+
+actor Usuario
+participant Navegador
+participant "Roteador Django" as Roteador
+participant "View ServicoListView" as View
+participant "Modelo Servico" as Modelo
+participant BancoDeDados
+participant Template
+
+Usuario -> Navegador: Solicita visualizar tabela de serviços
+Navegador -> Roteador: Envia requisição GET /servicos
+Roteador -> View: Chama View ServicoListView
+View -> Modelo: Busca lista de serviços
+Modelo -> BancoDeDados: Consulta serviços no banco
+BancoDeDados -> Modelo: Retorna dados dos serviços
+Modelo -> View: Retorna lista de serviços
+View -> Template: Renderiza tabela com serviços
+Template -> Navegador: Retorna HTML da tabela
+Navegador -> Usuario: Exibe tabela de serviços
+
+@enduml
