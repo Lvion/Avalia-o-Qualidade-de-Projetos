@@ -1,0 +1,65 @@
+@startuml
+actor Parceiro
+actor Funcionario
+participant "View\nCadastroParceiro" as View
+participant "Form\nParceiroForm" as Form
+participant "Model\nParceiro" as Model
+participant "Notification\nService" as Notify
+database "Database" as DB
+
+Parceiro -> View: Acessa página de cadastro
+activate View
+View --> Parceiro: Exibe formulário de cadastro
+
+Parceiro -> View: Submete dados do formulário
+View -> Form: Valida dados (clean_data())
+activate Form
+
+Form -> Form: Valida CNPJ
+Form -> Form: Valida Email
+Form -> Form: Valida Telefone
+Form -> Form: Valida Logo (imagem)
+
+alt Dados Inválidos
+    Form --> View: Retorna erros
+    View --> Parceiro: Exibe mensagens de erro
+else Dados Válidos
+    Form --> View: Dados validados
+    
+    View -> Model: Cria parceiro com status "Pendente"
+    activate Model
+    Model -> Model: Processa imagem do logo
+    Model -> DB: Salva dados do parceiro
+    Model --> View: Retorna parceiro criado
+    deactivate Model
+
+    View -> Notify: Notifica funcionário sobre novo cadastro
+    activate Notify
+    Notify -> DB: Registra notificação
+    Notify --> View: Confirma notificação
+    deactivate Notify
+
+    View --> Parceiro: Exibe mensagem de cadastro em análise
+end
+
+Funcionario -> View: Acessa lista de parceiros pendentes
+View -> DB: Busca parceiros pendentes
+DB --> View: Retorna lista
+View --> Funcionario: Exibe lista de pendentes
+
+Funcionario -> View: Aprova/Rejeita cadastro
+View -> Model: Atualiza status do parceiro
+Model -> DB: Salva novo status
+View -> Notify: Notifica parceiro da decisão
+Notify -> DB: Registra notificação
+
+alt Cadastro Aprovado
+    View --> Parceiro: Envia email de aprovação com credenciais
+else Cadastro Rejeitado
+    View --> Parceiro: Envia email de rejeição com motivo
+end
+
+deactivate Form
+deactivate View
+
+@enduml
