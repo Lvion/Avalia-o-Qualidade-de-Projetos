@@ -12,31 +12,31 @@ actor Cliente
 actor Parceiro
 actor Funcionario
 
-Usuario --> (Visualizar tabela de serviços)
-Usuario --> (Acessar aba de parcerias)
-Usuario --> (Visualizar horário de funcionamento)
-Usuario --> (Visualizar a localização)
+Usuario --> (UC11 - Visualizar tabela de serviços)
+Usuario --> (UC12 - Acessar aba de parcerias)
+Usuario --> (UC13 - Visualizar horário de funcionamento)
+Usuario --> (UC14 - Visualizar a localização)
 
-Parceiro --> (Cadastrar parceiro)
-Funcionario <-- (Cadastrar parceiro)
-Parceiro --> (Acessar área de parceiro)
+Parceiro --> (UC08 - Cadastrar parceiro)
+Funcionario <-- (UC08 - Cadastrar parceiro)
+Parceiro --> (UC06 -  Acessar área de parceiro)
 
-Cliente --> (Cadastrar dados)
-Cliente --> (Agendar serviço)
-Cliente --> (Desmarcar agendamento)
-Cliente --> (Acessar área cliente)
-Cliente <-- (Enviar orçamento)
-Cliente <-- (Confirmar agendamento)
+Cliente --> (UC01 - Cadastrar dados)
+Cliente --> (UC02 - Agendar serviço)
+Cliente --> (UC03 - Desmarcar agendamento)
+Cliente --> (UC04 - Acessar área cliente)
+Cliente <-- (UC05 - Enviar orçamento)
+Cliente <-- (UC07 - Confirmar agendamento)
 
-Funcionario --> (Registrar orçamento do pedido)
-Funcionario --> (Cadastrar serviços)
-Funcionario --> (Enviar orçamento)
-Funcionario --> (Confirmar agendamento)
+Funcionario --> (UC09 - Registrar orçamento do pedido)
+Funcionario --> (UC10 - Cadastrar serviços)
+Funcionario --> (UC05 - Enviar orçamento)
+Funcionario --> (UC07 - Confirmar agendamento)
 
-(Acessar área cliente) -.-> (Validar acesso) : <<include>>
-(Acessar área de parceiro) <-.- (Validar acesso) : <<include>>
-(Agendar serviço) -.-> (Validar acesso) : <<include>>
-(Desmarcar agendamento) -.-> (Validar acesso) : <<include>>
-(Confirmar agendamento) <-.- (Validar dados) : <<include>>
+(UC04 - Acessar área cliente) -.-> (UC15 - Validar acesso) : <<include>>
+(UC06 -  Acessar área de parceiro) <-.- (UC15 - Validar acesso) : <<include>>
+(UC02 - Agendar serviço) -.-> (UC15 - Validar acesso) : <<include>>
+(UC03 - Desmarcar agendamento) -.-> (UC15 - Validar acesso) : <<include>>
+(UC07 - Confirmar agendamento) <-.- (UC16 - Validar dados) : <<include>>
 
 @enduml
