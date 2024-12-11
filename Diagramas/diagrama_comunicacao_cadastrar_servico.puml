@@ -1,0 +1,50 @@
+@startuml
+hide empty members
+
+object "Funcionario" as func
+object "ServicoController" as ctrl
+object "ServicoForm" as form
+object "Servico" as serv
+object "ImagemService" as img
+object "Database" as db
+object "ValidadorAcesso" as valid
+
+' Conexões e mensagens
+func --> ctrl : 1: acessarCadastroServico()
+ctrl --> valid : 2: validarPermissao(funcionario)
+valid --> ctrl : 3: permissaoConfirmada()
+
+func --> ctrl : 4: submeterDadosServico(dados, imagem)
+ctrl --> form : 5: validarDados(dados)
+
+form --> ctrl : 6: dadosValidados()
+ctrl --> img : 7: processarImagem(imagem)
+img --> ctrl : 8: imagemProcessada()
+
+ctrl --> serv : 9: criarServico(dados, imagem)
+serv --> db : 10: salvar()
+db --> ctrl : 11: confirmarSalvamento()
+ctrl --> func : 12: exibirConfirmacao()
+
+note right of ctrl
+  Controller gerencia:
+  - Validação de acesso
+  - Validação de dados
+  - Processamento de imagem
+  - Persistência
+end note
+
+note right of img
+  ImagemService:
+  - Redimensiona imagem
+  - Valida formato
+  - Otimiza armazenamento
+end note
+
+note right of valid
+  ValidadorAcesso:
+  - Verifica autenticação
+  - Verifica permissões
+  - Valida papel de funcionário
+end note
+@enduml
