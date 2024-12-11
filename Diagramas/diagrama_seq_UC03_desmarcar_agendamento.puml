@@ -1,0 +1,24 @@
+@startuml
+
+actor Usuario
+participant Navegador
+participant "Roteador Django" as Roteador
+participant "View DesmarcarAgendamento" as View
+participant "Modelo Agendamento" as Modelo
+participant BancoDeDados
+participant Template
+
+Usuario -> Navegador: Solicita desmarcar agendamento
+Navegador -> Roteador: Envia requisição POST /desmarcar-agendamento
+Roteador -> View: Chama View DesmarcarAgendamento
+View -> Modelo: Busca agendamento pelo ID
+Modelo -> BancoDeDados: Consulta agendamento no banco
+BancoDeDados -> Modelo: Retorna dados do agendamento
+View -> Modelo: Exclui agendamento
+Modelo -> BancoDeDados: Executa exclusão do agendamento
+BancoDeDados -> Modelo: Confirma exclusão
+View -> Template: Renderiza mensagem de confirmação
+Template -> Navegador: Retorna resposta com confirmação
+Navegador -> Usuario: Exibe mensagem de sucesso
+
+@enduml
