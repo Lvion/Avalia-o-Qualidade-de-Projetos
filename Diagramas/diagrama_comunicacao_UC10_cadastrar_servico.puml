@@ -1,50 +1,31 @@
 @startuml
-hide empty members
 
-object "Funcionario" as func
-object "ServicoController" as ctrl
-object "ServicoForm" as form
-object "Servico" as serv
-object "ImagemService" as img
-object "Database" as db
-object "ValidadorAcesso" as valid
+skinparam objectFontSize 12
+skinparam objectFontColor black
+skinparam objectBorderColor black
+skinparam linetype ortho
 
-' Conexões e mensagens
-func --> ctrl : 1: acessarCadastroServico()
-ctrl --> valid : 2: validarPermissao(funcionario)
-valid --> ctrl : 3: permissaoConfirmada()
+object Funcionario
+object "ServicoController" as Controller
+object "ServicoForm" as Formulario
+object "Servico" as Servico
+object "ImagemService" as Imagem
+object "Database" as BancoDeDados
+object "ValidadorAcesso" as Validador
 
-func --> ctrl : 4: submeterDadosServico(dados, imagem)
-ctrl --> form : 5: validarDados(dados)
+Funcionario --> Controller : (1) Acessa página de cadastro de serviço
+Controller --> Validador : (2) Verifica permissão do funcionário
+Validador --> Controller : (3) Permissão confirmada
 
-form --> ctrl : 6: dadosValidados()
-ctrl --> img : 7: processarImagem(imagem)
-img --> ctrl : 8: imagemProcessada()
+Funcionario --> Controller : (4) Submete dados e imagem do serviço
+Controller --> Formulario : (5) Valida os dados submetidos
+Formulario --> Controller : (6) Dados validados
+Controller --> Imagem : (7) Processa a imagem do serviço
+Imagem --> Controller : (8) Imagem processada
 
-ctrl --> serv : 9: criarServico(dados, imagem)
-serv --> db : 10: salvar()
-db --> ctrl : 11: confirmarSalvamento()
-ctrl --> func : 12: exibirConfirmacao()
+Controller --> Servico : (9) Cria novo serviço com os dados e a imagem
+Servico --> BancoDeDados : (10) Salva os dados no banco
+BancoDeDados --> Controller : (11) Confirma o salvamento
+Controller --> Funcionario : (12) Exibe confirmação do cadastro
 
-note right of ctrl
-  Controller gerencia:
-  - Validação de acesso
-  - Validação de dados
-  - Processamento de imagem
-  - Persistência
-end note
-
-note right of img
-  ImagemService:
-  - Redimensiona imagem
-  - Valida formato
-  - Otimiza armazenamento
-end note
-
-note right of valid
-  ValidadorAcesso:
-  - Verifica autenticação
-  - Verifica permissões
-  - Valida papel de funcionário
-end note
 @enduml
