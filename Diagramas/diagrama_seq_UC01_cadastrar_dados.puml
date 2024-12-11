@@ -1,0 +1,30 @@
+@startuml
+
+actor Usuario
+participant Navegador
+participant "Roteador Django" as Roteador
+participant "View CadastroCliente" as View
+participant "Formulario ClienteForm" as Formulario
+participant "Modelo Cliente" as Modelo
+participant BancoDeDados
+participant Template
+
+Usuario -> Navegador: Acessa página de cadastro de cliente
+Navegador -> Roteador: Envia requisição GET /cadastro-cliente
+Roteador -> View: Chama View CadastroCliente
+View -> Template: Renderiza formulário de cadastro
+Template -> Navegador: Retorna HTML do formulário
+Navegador -> Usuario: Exibe formulário de cadastro
+
+Usuario -> Navegador: Submete formulário preenchido
+Navegador -> Roteador: Envia requisição POST /cadastro-cliente
+Roteador -> View: Chama View CadastroCliente
+View -> Formulario: Valida dados do formulário
+Formulario -> Modelo: Cria novo objeto Cliente
+Modelo -> BancoDeDados: Salva dados do cliente
+BancoDeDados -> Modelo: Confirmação do registro
+Modelo -> View: Retorna status do cadastro
+View -> Navegador: Redireciona para área do cliente
+Navegador -> Usuario: Exibe página de confirmação ou área do cliente
+
+@enduml
