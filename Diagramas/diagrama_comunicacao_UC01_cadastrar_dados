@@ -1,0 +1,35 @@
+@startuml
+
+skinparam objectFontSize 12
+skinparam objectFontColor black
+skinparam objectBorderColor black
+skinparam linetype ortho
+
+object Usuario
+object Navegador
+object "Roteador Django" as Roteador
+object "View CadastroCliente" as View
+object "Formulario ClienteForm" as Formulario
+object "Modelo Cliente" as Modelo
+object BancoDeDados
+object Template
+
+Usuario --> Navegador : (1) Acessa página de cadastro
+Navegador --> Roteador : (2) Envia requisição GET /cadastro-cliente
+Roteador --> View : (3) Encaminha para View CadastroCliente
+View --> Template : (4) Renderiza formulário de cadastro
+Template --> Navegador : (5) Retorna HTML do formulário
+
+Navegador --> Usuario : (6) Exibe formulário de cadastro
+Usuario --> Navegador : (7) Preenche e submete o formulário
+Navegador --> Roteador : (8) Envia requisição POST /cadastro-cliente
+Roteador --> View : (9) Encaminha para View CadastroCliente
+View --> Formulario : (10) Valida dados do formulário
+Formulario --> Modelo : (11) Cria novo objeto Cliente
+Modelo --> BancoDeDados : (12) Persiste os dados no banco
+BancoDeDados --> Modelo : (13) Retorna confirmação de cadastro
+View --> Template : (14) Gera página de resposta
+Template --> Navegador : (15) Retorna HTML renderizado
+Navegador --> Usuario : (16) Exibe resultado do cadastro
+
+@enduml
