@@ -7,7 +7,9 @@ A análise crítica do projeto revela várias áreas que precisam de melhorias s
 
 ## 1. **Documentação**
 -**Diagrama de casos de Uso**: Poderia ter sido elaborado com o auxílio de ferramentas online para garantir uma melhor organização e apresentação. Isso teria facilitado a compreensão das funcionalidades do sistema, ajudando os desenvolvedores e stakeholders a visualizar claramente os requisitos e interações do sistema com seus atores.
+
 -**Diagrama de sequencia**: A ausência de um diagrama de sequência compromete a legibilidade e o entendimento dos fluxos de interação para determinados casos de uso do sistema. Esse tipo de diagrama é essencial para descrever a ordem de execução e a troca de mensagens entre os objetos ou componentes do sistema.
+
 -**Diagrama de comunicação**: A criação de um diagrama de comunicação teria agregado valor significativo à documentação do sistema. Ele é especialmente útil para representar o funcionamento interno de um programa, detalhando os objetos que o compõem, suas funções e a sequência de operações.
 
 ## 2. **Arquitetura**
